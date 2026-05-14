@@ -15,21 +15,17 @@ Algorithm
 from heapq import heapify, heappop, heappush
 
 
-def Dijkstra(node, n, adj):
-    sd = [float('inf')] * n
-    sd[node] = 0
-    heap = []
-    heappush(heap, [0, node])
-    while heap:
-            dist, u = heappop(heap)
-            if dist > sd[u]:
-                continue
-            for v, w in adj[u]:
-                new_dist = dist + w
-                if new_dist < sd[v]:
-                    sd[v] = new_dist
-                    heappush(heap, [new_dist, v])
-    return sd
+def Dijkstra(src, n, adj):
+    distance = [int(1e8)] * n
+    distance[src] = 0
+    for i in range(n-1):
+        for u, v, dist in adj:
+            if (distance[u] != int(1e8) and distance[u] + dist < distance[v]):
+                distance[v] = distance[u] + dist
+    for u, v, dist in adj:
+        if (distance[u] != int(1e8) and distance[u] + dist < distance[v]):
+            return [-1]
+    return distance
     
 n = int(input("give the number of the nodes : "))
 adj = [[] for _ in range(n)]
